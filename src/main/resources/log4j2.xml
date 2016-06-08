@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration package="com.serena.completable" status="WARN">
+    <Appenders>
+        <!--%d{ss.SSS}-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%magenta{[%-33t]} %cyan{%C.%M} - %msg%n"/>
+        </Console>
+
+        <Console name="ConsoleWithoutThread" target="SYSTEM_OUT">
+            <PatternLayout pattern="%cyan{%M} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+        <Logger name="com.serena.completable.ExtractModify" level="info" additivity="false">
+            <AppenderRef ref="ConsoleWithoutThread"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>
