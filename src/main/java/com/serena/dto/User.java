@@ -8,13 +8,14 @@ import java.util.Set;
 public class User {
 
     @Id
+    @GeneratedValue
     private Long id;
     @Column
     private String firstName;
     @Column
     private String lastName;
 
-    @OneToMany
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "users")
     private Set<Project> projects;
 
     public Long getId() {

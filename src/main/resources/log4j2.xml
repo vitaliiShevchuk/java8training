@@ -19,5 +19,9 @@
             <AppenderRef ref="ConsoleWithoutThread"/>
         </Logger>
 
+        <Logger name="com.serena.optional" level="info" additivity="false">
+            <AppenderRef ref="ConsoleWithoutThread"/>
+        </Logger>
+
     </Loggers>
 </Configuration>

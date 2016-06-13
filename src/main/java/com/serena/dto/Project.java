@@ -8,19 +8,17 @@ import java.util.Set;
 public class Project {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     @Column
     private String title;
-    @Column
-    private String prefix;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private Set<Item> items;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User owner;
+    @ManyToMany(mappedBy = "projects")
+    private Set<User> users;
 
     public Long getId() {
         return id;
@@ -38,14 +36,6 @@ public class Project {
         this.title = title;
     }
 
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
     public Set<Item> getItems() {
         return items;
     }
@@ -54,11 +44,30 @@ public class Project {
         this.items = items;
     }
 
-    public User getOwner() {
-        return owner;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Project project = (Project) o;
+
+        if (id != null ? !id.equals(project.id) : project.id != null) return false;
+        return title.equals(project.title);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + title.hashCode();
+        return result;
     }
 }

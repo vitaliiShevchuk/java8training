@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class Item {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     @Column
@@ -15,7 +16,7 @@ public class Item {
     @Column
     private String title;
 
-    @Column
+    @Column(length = 2048)
     private String description;
 
     @ManyToOne
@@ -61,4 +62,6 @@ public class Item {
     public void setProject(Project project) {
         this.project = project;
     }
+
+
 }

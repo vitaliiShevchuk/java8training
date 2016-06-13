@@ -7,8 +7,8 @@ import org.junit.Test;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import static com.serena.CompletableFutures.await;
-import static com.serena.CompletableFutures.es;
+import static com.serena.completable.CompletableFutures.await;
+import static com.serena.completable.CompletableFutures.es;
 
 public class Creating {
 

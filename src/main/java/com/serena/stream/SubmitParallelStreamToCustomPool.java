@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Objects;
 import java.util.stream.LongStream;
 
-import static com.serena.CompletableFutures.fjp;
+import static com.serena.completable.CompletableFutures.fjp;
 
 public class SubmitParallelStreamToCustomPool {
 

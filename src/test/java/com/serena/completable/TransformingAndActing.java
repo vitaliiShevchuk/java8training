@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.concurrent.CompletableFuture;
-import static com.serena.CompletableFutures.*;
+import static com.serena.completable.CompletableFutures.*;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class TransformingAndActing {

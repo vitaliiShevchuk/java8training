@@ -9,9 +9,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static com.serena.CompletableFutures.await;
-import static com.serena.CompletableFutures.es;
-import static com.serena.CompletableFutures.factorial;
+import static com.serena.completable.CompletableFutures.await;
+import static com.serena.completable.CompletableFutures.es;
+import static com.serena.completable.CompletableFutures.factorial;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class CombineMultipleFutures {
@@ -28,7 +28,7 @@ public class CombineMultipleFutures {
     @Test
     public void combineOrChainMultipleFutures() throws ExecutionException, InterruptedException {
         //thenCompose() is an essential method that allows building robust, asynchronous pipelines
-        //without blocking or waiting for intermediate steps. Each subsequently create future depends on previous one
+        //without blocking or waiting for intermediate steps. Each subsequently buildComputer future depends on previous one
         //if some future in chain fails the ones after will not trigger
         //
         //it is looks like thenApply()

@@ -3,42 +3,55 @@ package com.serena.dto;
 import br.com.six2six.bfgex.RandomGen;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
-import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+import br.com.six2six.fixturefactory.function.AtomicFunction;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
-import org.springframework.beans.factory.annotation.Configurable;
 
-import java.util.List;
 
 public class Fixtures implements TemplateLoader {
 
     @Override
     public void load() {
         Fixture.of(User.class).addTemplate("valid", new Rule() {{
-            add("id", random(Long.class, range(1L, 200L)));
             add("firstName", firstName());
             add("lastName", lastName());
-            add("projects", has(10).of(Project.class, "valid"));
+            add("projects", has(3).of(Project.class, "IDM", "VM", "CM"));
         }});
 
-        Fixture.of(Project.class).addTemplate("valid", new Rule(){{
-            add("id", random(Long.class, range(1L, 200L)));
-            add("title", random("IDM", "Global", "CM", "Vacation Manager", "Dimensions"));
-            add("prefix", random("XX", "YY", "ZZ"));
+        Fixture.of(Project.class).addTemplate("IDM", new Rule(){{
+            add("title", "IDM");
             add("items", has(100).of(Item.class, "valid"));
         }});
 
+        Fixture.of(Project.class).addTemplate("VM", new Rule(){{
+            add("title", "VM");
+            add("items", has(300).of(Item.class, "valid"));
+        }});
+
+        Fixture.of(Project.class).addTemplate("CM", new Rule(){{
+            add("title", "CM");
+            add("items", has(1000).of(Item.class, "valid"));
+        }});
+
         Fixture.of(Item.class).addTemplate("valid", new Rule() {{
-            add("id", random(Long.class, range(1L, 200L)));
-            add("itemId", RandomGen.word(4));
-            add("description", RandomGen.sentence());
-            add("title", RandomGen.word());
+            add("itemId", new AtomicFunction() {
+                @Override
+                public  String generateValue() {
+                    return RandomGen.word(4);
+                }
+            });
+            add("description", new AtomicFunction() {
+                @Override
+                public String generateValue() {
+                    return RandomGen.sentence();
+                }
+            });
+            add("title", new AtomicFunction() {
+                @Override
+                public  String generateValue() {
+                    return RandomGen.word();
+                }
+            });
         }});
     }
 
-    public static void main(String[] args) {
-        FixtureFactoryLoader.loadTemplates("com.serena.dto");
-        List<User> valid = Fixture.from(User.class).gimme(100, "valid");
-
-        System.out.println(valid);
-    }
 }
