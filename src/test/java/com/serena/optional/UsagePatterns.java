@@ -18,7 +18,7 @@ public class UsagePatterns {
 
     private static final Logger LOG = LogManager.getLogger(UsagePatterns.class);
 
-    private Computer computer =
+    final private Computer computer =
             new ComputerBuilder()
                     .setCpu(new CPUBuilder()
                             .setCores(4)
@@ -55,8 +55,9 @@ public class UsagePatterns {
 
         if (computer != null)
             if (computer.getCpu() != null)
-                if (computer.getCpu().getClockRate() != null)
+                if (computer.getCpu().getClockRate() != null) {
                     //do something with clock rate
+                }
 
         //code is starting to look closer to the problem statement and there are no verbose null checks getting in our way
         Optional<Computer> computerOptional = Optional.of(this.computer);
