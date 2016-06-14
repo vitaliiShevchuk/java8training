@@ -12,6 +12,12 @@ public class SubmitParallelStreamToCustomPool {
 
     private static final Logger LOG = LogManager.getLogger(SubmitParallelStreamToCustomPool.class);
 
+    public static void main(String[] args) {
+
+
+
+    }
+
     public static void submitToCustomFJP() {
         fjp().submit(() -> {
             LongStream.range(0, 500L)
