@@ -19,7 +19,7 @@ public class ErrorHandling {
             throw ex;
         });
                 //provide a value in case of exception
-        CompletableFuture<String> asyncExceptionCatch = f.exceptionally(ex -> "Huston we have a problem");
+        CompletableFuture<String> asyncExceptionCatch = f.exceptionally(ex -> "Houston we have a problem");
 
         LOG.info(f);
         LOG.info(asyncExceptionCatch);

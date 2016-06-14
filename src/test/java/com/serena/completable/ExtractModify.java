@@ -13,14 +13,14 @@ public class ExtractModify {
 
     private static final Logger LOG = LogManager.getLogger(ExtractModify.class);
 
-    public static final CompletableFuture<String> createFuture() {
+    public static final CompletableFuture<String> createEmptyFuture() {
         final CompletableFuture<String> f = new CompletableFuture<>();
         return f;
     }
 
     @Test
     public void weCanCompleteFutureWithSomeExistingValue() throws ExecutionException, InterruptedException {
-        CompletableFuture<String> future = createFuture();
+        CompletableFuture<String> future = createEmptyFuture();
 
         LOG.info(future);
         assertEquals("no value there yet",future.getNow("no value there yet"));
@@ -34,9 +34,13 @@ public class ExtractModify {
         future.obtrudeValue("override");
         assertEquals("override", future.get());
 
-        CompletableFuture<String> futureExceptional = createFuture();
+        CompletableFuture<String> futureExceptional = createEmptyFuture();
         futureExceptional.completeExceptionally(new RuntimeException());
+
+        futureExceptional.isCompletedExceptionally();
         LOG.info(futureExceptional);
+
+        future.get();
     }
 
 

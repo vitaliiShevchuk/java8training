@@ -40,12 +40,13 @@ public class CombineMultipleFutures {
             throw ex;
         })
                 .thenCompose(lets -> waitAndSupplyString(lets + " chain"))
-                .thenCompose(letsChain -> waitAndSupplyString(letsChain + " 3 futures"));
+                .thenCompose(letsChain ->        waitAndSupplyString(letsChain + " 3 futures"));
 
 
-        CompletableFuture<String> chained = waitAndSupplyString("lets")
-                .thenCompose(lets -> waitAndSupplyString(lets + " chain"))
-                .thenCompose(letsChain -> waitAndSupplyString(letsChain + " 3 futures"));
+        CompletableFuture<String> chained =
+                waitAndSupplyString("lets").thenCompose(lets ->
+                        waitAndSupplyString(lets + " chain")).thenCompose(letsChain ->
+                        waitAndSupplyString(letsChain + " 3 futures"));
 
         CompletableFuture.allOf(exceptional, chained);
 

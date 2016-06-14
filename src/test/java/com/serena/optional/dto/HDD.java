@@ -5,7 +5,7 @@ public class HDD {
     private Integer rotationSpeed;
     private Integer capacity;
 
-    private HDD(Integer rotationSpeed, Integer capacity) {
+    public HDD(Integer rotationSpeed, Integer capacity) {
         this.rotationSpeed = rotationSpeed;
         this.capacity = capacity;
     }

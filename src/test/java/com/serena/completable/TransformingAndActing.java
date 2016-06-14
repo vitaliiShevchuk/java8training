@@ -19,7 +19,9 @@ public class TransformingAndActing {
         //transformations are neither executed immediately nor blocking
         //they are simply remembered and when original f completes they are executed for you.
         CompletableFuture<BigInteger> f = supplyAsync(() -> factorial(50000L));
-        f
+
+        CompletableFuture<String> stringCompletableFuture = f
+                //CompletableFuture<BigInteger> => CompletableFuture<BigInteger>
                 .thenApply(i -> {
                     LOG.info("divide");
                     return i.divide(BigInteger.TEN);
@@ -31,7 +33,9 @@ public class TransformingAndActing {
                 .thenApplyAsync(i -> {
                     LOG.info("toString");
                     return i.toString();
-                }, es()).join();
+                }, es());
+
+        stringCompletableFuture.join();
     }
 
     @Test

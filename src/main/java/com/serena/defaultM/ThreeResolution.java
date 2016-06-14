@@ -12,14 +12,6 @@ public class ThreeResolution {
 
 }
 
-interface AA<A,B,C,D> {
-    D doJob(A a, B b, C c, D d);
-}
-
-interface BB<A,B,C,D> {
-    D doJob(A a, B b, C c, D d);
-}
-
 interface A {
     default void print() {
         System.out.println("<<A>>");

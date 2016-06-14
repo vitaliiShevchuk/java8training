@@ -13,19 +13,19 @@ public class Option<T> {
     private final T value;
 
     public static final <T> Option<T> of(T value) {
-        Objects.requireNonNull(value);
-        return new Option<>(value);
-    }
-    public static final <T> Option<T> ofNullable(T value) {
-        if (value == null) {
-            return empty();
+            Objects.requireNonNull(value);
+            return new Option<>(value);
         }
+        public static final <T> Option<T> ofNullable(T value) {
+            if (value == null) {
+                return empty();
+            }
 
-        return new Option<>(value);
-    }
-    public static <T> Option<T> empty() {
-        @SuppressWarnings("unchecked")
-        Option<T> t = (Option<T>) EMPTY;
+            return new Option<>(value);
+        }
+        public static <T> Option<T> empty() {
+            @SuppressWarnings("unchecked")
+            Option<T> t = (Option<T>) EMPTY;
         return t;
     }
 

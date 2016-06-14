@@ -14,7 +14,6 @@ public class Creating {
 
     private static final Logger LOG = LogManager.getLogger(Creating.class);
     private static Long get42() {
-        LOG.info("");
         await(250, TimeUnit.MILLISECONDS);
 
         return 42L;
