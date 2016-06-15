@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 
@@ -129,6 +130,11 @@ public class UsagePatterns {
                                 .map(capacity2 -> capacity1 + capacity2)
                 );
         LOG.info(totalCapacity);
+
+        Function<Computer, Optional<Integer>> f = (Computer c) -> c.getSsd().flatMap(SSD::getCapacity);
+        computer
+                .flatMap(f)
+                .flatMap(c1 -> computer2.flatMap(f).map(c2 -> c1 + c2));
     }
 
     @Test
@@ -144,7 +150,6 @@ public class UsagePatterns {
 
     @Test(expected = RuntimeException.class)
     public void examples() {
-
 
         //code is starting to look closer to the problem statement and there are no verbose null checks getting in our way
         Optional<Computer> computerOptional = Optional.of(this.computer);

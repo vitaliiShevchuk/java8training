@@ -23,6 +23,8 @@ public class Creating {
     @Test
     public void testCreateWithSupplier() {
         CompletableFuture<Long> promise = new CompletableFuture<>();
+        //currently following statement will block forever
+        //promise.get();
 
         //..and complete it in 2 seconds
         CompletableFuture.runAsync(() -> {
@@ -44,10 +46,11 @@ public class Creating {
         CompletableFuture<Long> futureOnCustomPool =
                 CompletableFuture.supplyAsync(Creating::get42, es());
 
+
+        //await for all futures to finish
         completedFuture.join();
         futureOnCommonPool.join();
         futureOnCustomPool.join();
-
         promise.join();
     }
 

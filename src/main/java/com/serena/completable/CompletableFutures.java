@@ -19,7 +19,7 @@ public class CompletableFutures {
     private static ForkJoinPool FORK_JOIN_POOL;
 
     static {
-        EXECUTOR_SERVICE = Executors.newFixedThreadPool(4, runnable -> {
+        EXECUTOR_SERVICE = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), runnable -> {
             Thread t = new Thread(runnable);
             t.setName("custom-pool-" + threadNumber.getAndAdd(1));
             return t;

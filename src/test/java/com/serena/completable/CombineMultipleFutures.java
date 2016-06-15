@@ -26,8 +26,8 @@ public class CombineMultipleFutures {
     }
 
     @Test
-    public void combineOrChainMultipleFutures() throws ExecutionException, InterruptedException {
-        //thenCompose() is an essential method that allows building robust, asynchronous pipelines
+    public void chainMultipleFutures() throws ExecutionException, InterruptedException {
+        //thenCompose() is an essential method that allows building asynchronous pipelines
         //without blocking or waiting for intermediate steps. Each subsequently buildComputer future depends on previous one
         //if some future in chain fails the ones after will not trigger
         //

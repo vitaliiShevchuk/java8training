@@ -10,9 +10,9 @@ import java.util.concurrent.CompletableFuture;
 import static com.serena.completable.CompletableFutures.factorial;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
-public class Combine {
+public class CombineEither {
 
-    private static final Logger LOG = LogManager.getLogger(Combine.class);
+    private static final Logger LOG = LogManager.getLogger(CombineEither.class);
 
     @Test
     public void useResultFromFirstCompleted() {
