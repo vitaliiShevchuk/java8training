@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import java.util.Optional;
-import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 
