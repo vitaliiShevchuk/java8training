@@ -5,10 +5,12 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static com.serena.completable.CompletableFutures.await;
 import static com.serena.completable.CompletableFutures.es;
+import static org.junit.Assert.assertEquals;
 
 public class Creating {
 
@@ -19,6 +21,30 @@ public class Creating {
         return 42L;
     }
 
+    @Test
+    public void weCanCompleteFutureWithSomeExistingValue() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
+        LOG.info(future);
+        assertEquals("no value there yet",future.getNow("no value there yet"));
+
+        future.complete("qwerty");
+        LOG.info(future);
+
+        assertEquals("qwerty", future.get());
+
+        LOG.info(future);
+        future.obtrudeValue("override");
+        assertEquals("override", future.get());
+
+        CompletableFuture<String> futureExceptional = new CompletableFuture<>();
+        futureExceptional.completeExceptionally(new RuntimeException());
+
+        futureExceptional.isCompletedExceptionally();
+        LOG.info(futureExceptional);
+
+        future.get();
+    }
 
     @Test
     public void testCreateWithSupplier() {

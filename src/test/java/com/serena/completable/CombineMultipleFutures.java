@@ -18,7 +18,7 @@ public class CombineMultipleFutures {
 
     private static final Logger LOG = LogManager.getLogger(CombineMultipleFutures.class);
 
-    private static final CompletableFuture<String> waitAndSupplyString(String value) {
+    private static CompletableFuture<String> waitAndSupplyString(String value) {
         return supplyAsync(() -> {
             await(1L, TimeUnit.SECONDS);
             return value;
@@ -34,6 +34,11 @@ public class CombineMultipleFutures {
         //it is looks like thenApply()
         //but it gets Function<A, CompletableFuture<B>> and returns CompletableFuture<B>
         //while thenApply() returns CompletableFuture<CompletableFuture<B>>
+
+        CompletableFuture<CompletableFuture<String>> completableFutureCompletableFuture = supplyAsync(() -> {
+            RuntimeException ex = new RuntimeException();
+            throw ex;
+        }).thenApply(lets -> waitAndSupplyString(lets + " chain"));
 
         CompletableFuture<String> exceptional = supplyAsync(() -> {
             RuntimeException ex = new RuntimeException();

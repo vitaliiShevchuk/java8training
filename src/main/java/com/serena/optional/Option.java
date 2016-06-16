@@ -7,16 +7,16 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class Option<T> {
+public final class Option<T> {
 
     private static final Option<?> EMPTY = new Option<>();
     private final T value;
 
-    public static final <T> Option<T> of(T value) {
+    public static <T> Option<T> of(T value) {
             Objects.requireNonNull(value);
             return new Option<>(value);
         }
-        public static final <T> Option<T> ofNullable(T value) {
+        public static <T> Option<T> ofNullable(T value) {
             if (value == null) {
                 return empty();
             }
@@ -28,7 +28,6 @@ public class Option<T> {
             Option<T> t = (Option<T>) EMPTY;
         return t;
     }
-
 
     //empty case
     private Option() {
@@ -43,7 +42,7 @@ public class Option<T> {
         throw new NotImplementedException();
     }
 
-    public <U> Option<U> flatMap(Function<Long, Option<String>> f) {
+    public <U> Option<U> flatMap(Function<? super T, Option<U>> f) {
         throw new NotImplementedException();
     }
 
@@ -55,11 +54,8 @@ public class Option<T> {
         throw new NotImplementedException();
     }
 
-    public T filter(Predicate<T> predicate) {
+    public Option<T> filter(Predicate<T> predicate) {
         throw new NotImplementedException();
     }
-
-
-
 
 }

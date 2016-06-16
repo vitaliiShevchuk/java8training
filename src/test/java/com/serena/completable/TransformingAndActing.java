@@ -18,13 +18,13 @@ public class TransformingAndActing {
     public void transformUnderlyingValue() {
         //transformations are neither executed immediately nor blocking
         //they are simply remembered and when original f completes they are executed for you.
-        CompletableFuture<BigInteger> f = supplyAsync(() -> factorial(50000L));
+        CompletableFuture<BigInteger> f = CompletableFuture.supplyAsync(() -> factorial(50000L));
 
         CompletableFuture<String> stringCompletableFuture = f
                 //CompletableFuture<BigInteger> => CompletableFuture<BigInteger>
                 .thenApply(i -> {
                     LOG.info("divide");
-                    return i.divide(BigInteger.TEN);
+                    return i.divide(null);
                 })
                 .thenApplyAsync(i -> {
                     LOG.info("not");
@@ -43,12 +43,13 @@ public class TransformingAndActing {
         //same as transformations - this methods do not block
 
         {
-            CompletableFuture<String> f =
-                    supplyAsync(() -> factorial(50000L)).thenApply(BigInteger::toString);
+            CompletableFuture<String> f = new CompletableFuture<>();
+            f.complete("some instant value");
 
             f
                     .thenAccept(s -> LOG.info("at this point we consume value and return CompletableFuture<Void> {}", s))
                     .thenRun(() -> LOG.info("thenAccept consumed value"))
+
                     .join();
         }
 

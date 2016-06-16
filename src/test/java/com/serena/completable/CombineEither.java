@@ -23,7 +23,8 @@ public class CombineEither {
         CompletableFuture<String> f2 = supplyAsync(() -> factorial(50000L)).thenApply(BigInteger::toString);
 
 
-        f1.acceptEither(f2, str -> LOG.info(str)).join();
+
+
         //.runAfterEither
         //.applyToEither
 

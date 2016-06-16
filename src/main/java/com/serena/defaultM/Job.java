@@ -7,20 +7,22 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public interface Job<T> {
+@FunctionalInterface
+public interface Job<T> extends Function<Collection<Long>, List<T>>{
 
-    List<T> calculate(Collection<Long> ids);
+//    List<T> calculate(Collection<Long> ids);
 
     default Future<List<T>> calculateAsync(Collection<Long> ids) {
-        return ES.submit(() -> calculate(ids));
+        return ES.submit(() -> apply(ids));
     }
 
     default Optional<List<T>> tryCalculate(Collection<Long> ids) {
-        return Optional.ofNullable(calculate(ids));
+        return Optional.ofNullable(apply(ids));
     }
 
     default Optional<List<T>> tryCalculateWithFilter(Collection<Long> ids, Predicate<Long> predicate) {
@@ -34,7 +36,7 @@ public interface Job<T> {
 
     static void executeAll(Collection<Job<?>> jobs, Collection<Long> ids) {
         CompletableFuture<?>[] futures = jobs.stream()
-                .map(job -> CompletableFuture.supplyAsync(() -> job.calculate(ids)))
+                .map(job -> CompletableFuture.supplyAsync(() -> job.apply(ids)))
                 .toArray(CompletableFuture[]::new);
 
         CompletableFuture.allOf(futures);

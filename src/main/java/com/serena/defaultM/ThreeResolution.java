@@ -35,7 +35,7 @@ class D implements A {
     }
 }
 
-class ClassD extends D implements C {
+class ClassD extends D implements B, C {
 
 }
 

@@ -94,10 +94,24 @@ public class UsagePatterns {
                     .getCpu()
                     .getManufacturer();
 
+        if (computer != null)
+            if (computer.getCpu() != null)
+                if (computer.getCpu().getManufacturer() != null) {
+                    //do something with clock rate
+                }
+
         manufacturer = Optional.ofNullable(computer)// Optional<Computer>
                 .map(Computer::getCpu)// Optional<CPU>
                 .map(CPU::getManufacturer)// Optional<String>
+
                 .orElse("No Manufacturer specified");// String
+
+        Optional<Computer> computer = Optional.ofNullable(this.computer);
+        Optional<CPU> cpu = computer.map(Computer::getCpu);
+        Optional<String> manufacturerOpt = cpu.map(CPU::getManufacturer);
+
+        String s = manufacturerOpt.orElse("No Manufacturer specified");
+
 
         assertEquals("Intel", manufacturer);
     }
@@ -112,6 +126,7 @@ public class UsagePatterns {
 //                .filter(capacity -> capacity > 1024)
 //                .ifPresent(LOG::info);
 
+
         //Stream<List<Long>> => Stream<Long>
         //stream.flatMap(list -> list.stream())
         Optional<Computer> computerOptional = Optional.of(this.computer);
@@ -123,8 +138,9 @@ public class UsagePatterns {
 
     @Test
     public void combining() {
-        Optional<Computer> computer = Optional.ofNullable(this.computer);
+//        Optional<Computer> computer = Optional.ofNullable(this.computer);
         Optional<Computer> computer2 = Optional.ofNullable(this.computer2);
+        Optional<Computer> computer = Optional.ofNullable(this.computer);
 
         computer
                 .flatMap(Computer::getSsd)
