@@ -11,6 +11,10 @@ public class Computer {
     private Optional<HDD> hdd = empty();
     private Optional<SSD> ssd = empty();
 
+    public Computer() {
+
+    }
+
     public Computer(CPU cpu, HDD hdd, SSD ssd) {
         this.cpu = cpu;
         this.hdd = ofNullable(hdd);

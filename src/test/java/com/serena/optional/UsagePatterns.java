@@ -39,20 +39,23 @@ public class UsagePatterns {
             new ComputerBuilder()
                     .setCpu(new CPUBuilder()
                             .setCores(4)
-                            .setClockRate(4000)
-                            .setManufacturer("Intel")
-                            .setIntegratedGraphics("HD4000")
+                            .setClockRate(3300)
+                            .setManufacturer("AMD")
+                            .setIntegratedGraphics("HD8000")
                             .createCPU())
                     .setSsd(new SSDBuilder()
-                            .setCapacity(128)
+                            .setCapacity(256)
                             .setReadSpeed(400)
                             .setWriteSpeed(600)
                             .createSSD())
-                    .setHdd(new HDD(720, 1024))
+                    .setHdd(new HDD(100, 1024))
                     .createComputer();
 
-    private void classicalApproach() {
-        //classical approach to check for nulls and check if value matches some predicate
+    private void problemStatement() {
+        computer.getCpu().getClockRate();
+
+
+        //classical approaches to check for nulls and check if value matches some predicate
         if (computer != null && computer.getCpu() != null && computer.getCpu().getClockRate() > 1000) {
             //do something with computer
         }
@@ -65,18 +68,36 @@ public class UsagePatterns {
     }
 
     @Test
-    public void extractingAndTransformingValues() {
-        String manufacturer = null;
+    public void extracting() {
+        Optional<Computer> computerOptional = Optional.of(this.computer);
+
+        computerOptional
+                .orElse(new Computer());
+
+        computerOptional
+                .orElseGet(Computer::new);
+
+        computerOptional
+                .orElseThrow(RuntimeException::new);
+
+        if (computerOptional.isPresent())
+            computerOptional.get();
+
+        computerOptional.ifPresent(LOG::info);
+    }
+
+    @Test
+    public void transformingValues() {
+        String manufacturer;
         if (computer != null)
-            manufacturer = computer.getCpu().getManufacturer();
+            manufacturer = computer
+                    .getCpu()
+                    .getManufacturer();
 
         manufacturer = Optional.ofNullable(computer)// Optional<Computer>
-                .map(Computer::getCpu)// <=> Optional<CPU>
-                .map(CPU::getManufacturer)// <=> Optional<String>
-                .orElse("No Manufacturer specified");// <=> String
-//              .orElseThrow(RuntimeException::new);
-//              .orElseGet(() -> "No Manufacturer specified");
-//              .get()
+                .map(Computer::getCpu)// Optional<CPU>
+                .map(CPU::getManufacturer)// Optional<String>
+                .orElse("No Manufacturer specified");// String
 
         assertEquals("Intel", manufacturer);
     }
@@ -86,7 +107,7 @@ public class UsagePatterns {
 
 //        Optional<Computer> computerOptional = Optional.of(this.computer);
 //        computerOptional
-//                .map(Computer::getHdd) // <=> Optional<Optional<HDD>>
+//                .map(Computer::getHdd) // Optional<Optional<HDD>>
 //                .map(HDD::getCapacity)
 //                .filter(capacity -> capacity > 1024)
 //                .ifPresent(LOG::info);
@@ -95,24 +116,9 @@ public class UsagePatterns {
         //stream.flatMap(list -> list.stream())
         Optional<Computer> computerOptional = Optional.of(this.computer);
         computerOptional
-                .flatMap(Computer::getHdd)// <=> Optional<HDD>
+                .flatMap(Computer::getHdd)// Optional<HDD>
                 .map(HDD::getCapacity)
                 .ifPresent(LOG::info);
-    }
-
-    @Test
-    public void defaultActionsAndUnwrapping() {
-        Optional<Computer> computerOptional = Optional.ofNullable(computer);
-
-        computerOptional.get();
-        computerOptional.orElse(null);
-        computerOptional.orElseGet(() -> null);
-        computerOptional.orElseThrow(NullPointerException::new);
-        computerOptional.ifPresent(computerPresent -> System.out.println(computerPresent));
-
-        if (computerOptional.isPresent()) {
-            LOG.info("isPresent {}", computerOptional.get());
-        }
     }
 
     @Test
@@ -128,24 +134,8 @@ public class UsagePatterns {
                                 .flatMap(Computer::getHdd)
                                 .map(HDD::getCapacity)
                                 .map(capacity2 -> capacity1 + capacity2)
-                );
-        LOG.info(totalCapacity);
-
-        Function<Computer, Optional<Integer>> f = (Computer c) -> c.getSsd().flatMap(SSD::getCapacity);
-        computer
-                .flatMap(f)
-                .flatMap(c1 -> computer2.flatMap(f).map(c2 -> c1 + c2));
-    }
-
-    @Test
-    public void ifPresent() {
-        Optional<Computer> computer = Optional.of(this.computer);
-
-        //`if` approach
-
-
-        //consumer approach
-        computer.ifPresent(c -> LOG.info("ifPresent {})", c));
+                )
+                .ifPresent(LOG::info);
     }
 
     @Test(expected = RuntimeException.class)
