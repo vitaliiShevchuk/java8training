@@ -126,7 +126,7 @@ public class UsagePatterns {
         Optional<Computer> computer = Optional.ofNullable(this.computer);
         Optional<Computer> computer2 = Optional.ofNullable(this.computer2);
 
-        Optional<Integer> totalCapacity = computer
+        computer
                 .flatMap(Computer::getSsd)
                 .flatMap(SSD::getCapacity)
                 .flatMap(capacity1 ->
