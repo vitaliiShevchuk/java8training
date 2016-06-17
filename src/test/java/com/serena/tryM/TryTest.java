@@ -1,11 +1,20 @@
 package com.serena.tryM;
 
+import com.serena.optional.UsagePatterns;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.mockito.internal.verification.checkers.NumberOfInvocationsChecker;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -14,6 +23,8 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TryTest {
+
+    private static final Logger LOG = LogManager.getLogger(TryTest.class);
 
     @Mock
     CheckedConsumer<String> failingConsumer;
@@ -159,6 +170,25 @@ public class TryTest {
         verifyZeroInteractions(truePredicate);
 
         assertTrue(aTry.equals(failure));
+    }
+
+    private String toString(Long n) throws Exception {
+        return n.toString();
+    }
+
+    @Test
+    public void testWithStream() {
+        Random random = new Random();
+        Optional<Try<String>> first = random.ints(1000).boxed()
+                .map(x -> Try.of(() -> String.valueOf(x / 0)))
+                .findFirst();
+
+
+
+        first.ifPresent(tryA -> {
+            if (tryA.isFailure());
+                LOG.error(tryA.getCause());
+        });
     }
 
 }

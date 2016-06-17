@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class SubmitParallelStreamToCustomPoolTest {
     @Test
     public void submitToCustomFJP() throws Exception {
-        SubmitParallelStreamToCustomPool.submitToCustomFJP();
+//        SubmitParallelStreamToCustomPool.submitToCustomFJP();
     }
 
 }

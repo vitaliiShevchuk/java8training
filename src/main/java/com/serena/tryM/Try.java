@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public interface Try<T> {
 
@@ -20,11 +21,23 @@ public interface Try<T> {
 
     /*** Creation ***/
     static <T> Try<T> of(CheckedSupplier<? extends T> supplier) {
-        throw new UnsupportedOperationException();
+        try {
+            T t = supplier.get();
+            return new Success<T>(t);
+        } catch (Throwable e) {
+            return new Failure<T>(e);
+
+        }
     }
 
     static Try<Void> run(CheckedRunnable runnable) {
-        throw new UnsupportedOperationException();
+        try {
+            runnable.run();
+            return new Success<Void>(null);
+        } catch (Throwable e) {
+            return new Failure<Void>(e);
+
+        }
     }
 
 
@@ -50,7 +63,18 @@ public interface Try<T> {
     }
 
     default Try<T> filterTry(CheckedPredicate<? super T> predicate, Supplier<? extends Throwable> throwableSupplier) {
-        throw new UnsupportedOperationException();
+        if (isFailure())
+            return this;
+        else {
+            try {
+                if (predicate.test(get()))
+                    return this;
+                else
+                    return new Failure<T>(throwableSupplier.get());
+            } catch (Throwable e) {
+                return new Failure<T>(e);
+            }
+        }
     }
 
     /*** combinators ***/
@@ -59,7 +83,15 @@ public interface Try<T> {
     }
 
     default <U> Try<U> mapTry(CheckedFunction<? super T, ? extends U> mapper) {
-        throw new UnsupportedOperationException();
+        if (isFailure())
+            return (Try<U>)this;
+        else {
+            try {
+                return success(mapper.apply(get()));
+            } catch (Throwable throwable) {
+                return failure(throwable);
+            }
+        }
     }
 
     //like @map but gets Consumer
@@ -68,7 +100,16 @@ public interface Try<T> {
     }
 
     default Try<T> andThenTry(CheckedConsumer<? super T> consumer) {
-        throw new UnsupportedOperationException();
+        if (isFailure()) {
+            return this;
+        } else {
+            try {
+                consumer.accept(get());
+                return success(null);
+            } catch (Throwable e) {
+                return failure(e);
+            }
+        }
     }
 
     //like @map but gets Runnable
@@ -77,15 +118,33 @@ public interface Try<T> {
     }
 
     default Try<T> andThenTry(CheckedRunnable runnable) {
-        throw new UnsupportedOperationException();
+        if (isFailure()) {
+            return this;
+        } else {
+            try {
+                runnable.run();
+                return success(null);
+            } catch (Throwable e) {
+                return failure(e);
+            }
+        }
     }
 
-    default <U> Try<U> flatMap(Function<? super T, ? extends Try<? extends U>> mapper) {
+    default <U> Try<U> flatMap(Function<? super T, ? extends Try<U>> mapper) {
         return flatMapTry(mapper::apply);
     }
 
-    default <U> Try<U> flatMapTry(CheckedFunction<? super T, ? extends Try<? extends U>> mapper) {
-        throw new UnsupportedOperationException();
+    default <U> Try<U> flatMapTry(CheckedFunction<? super T, ? extends Try<U>> mapper) {
+        if (isFailure()) {
+            return (Try<U>) this;
+        } else {
+            try {
+                Try<U> aTry = (Try<U>) mapper.apply(get());
+                return aTry;
+            } catch (Throwable throwable) {
+                return failure(throwable);
+            }
+        }
     }
 
     /*** HOMEWORK ***/
